@@ -1,0 +1,3 @@
+Ironman,200,5
+Hulk,50,2
+Thanos,400,1
