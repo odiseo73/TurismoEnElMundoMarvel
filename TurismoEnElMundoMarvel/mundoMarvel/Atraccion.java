@@ -40,6 +40,9 @@ public class Atraccion implements Ofertable{
 	public void restarCupo() {
 		this.cupoDisponible -= 1;
 	}
+	public boolean hayCupo() {
+		return this.cupoDisponible > 0;
+	}
 
 protected void setPrecioConPromocion(int descuento) {
 	this.precio -= descuento;

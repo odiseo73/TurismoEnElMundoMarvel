@@ -3,14 +3,19 @@ package mundoMarvel;
 import java.util.List;
 
 public class PromocionPorcentual extends Promocion{
-	public PromocionPorcentual(String nombre, List<Atraccion> atracciones) {
+	 private int descuentoPorcentual; 
+	 private double precio;
+	public PromocionPorcentual(String nombre, int descuento, List<Atraccion> atracciones) {
 		super(nombre, atracciones);
-	
+		this.descuentoPorcentual = descuento;
 	}
 
 
-	private double precio;
-	
+	@Override
+	public String toString() {
+		return "PromocionPorcentual [descuentoPorcentual=" + descuentoPorcentual + ", precio=" + precio + "]";
+	}
+
 
 	@Override
 	protected double getDescuento() {

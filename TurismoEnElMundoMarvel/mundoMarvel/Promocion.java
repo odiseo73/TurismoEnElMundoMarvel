@@ -35,8 +35,10 @@ public abstract class Promocion implements Ofertable {
 		return 0;
 	}
 
-	@Override
-	public String toString() {
-		return "Promocion [nombre=" + nombre + ", atracciones=" + atracciones + "]";
+	
+	public String devolver() {
+		return "Promocion" + "/n" + "nombre:" + nombre + "/n"+ "atracciones incluidas:" 
+	+ atracciones + "/n" + "Duración:" + getTiempoRequerido() + "/n"
+	+ "Precio Original:" + getPrecio() + "/n" + "Precio con descuento:" + getDescuento() + "/n";
 	}
 }
