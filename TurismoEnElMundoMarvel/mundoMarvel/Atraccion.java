@@ -1,19 +1,22 @@
 package mundoMarvel;
 
-public class Atraccion {
+import java.util.Objects;
+
+public class Atraccion implements Ofertable{
 
 	private String nombre;
 	private int precio;
 	private double duracionEnHoras;
-	private int cupoInicial;
+	private final int CUPO_INICIAL;
 	private int cupoDisponible;
 
-	public Atraccion(String nombre, int precio, double duracionEnHoras, int cupoInicial) {
+	public Atraccion(String nombre, int precio, double duracionEnHoras, int cupo) {
 		super();
 		this.nombre = nombre;
 		this.precio = precio;
 		this.duracionEnHoras = duracionEnHoras;
-		this.cupoInicial = cupoInicial;
+		this.CUPO_INICIAL = cupo;
+		this.cupoDisponible = cupo;
 	}
 	
 
@@ -21,16 +24,12 @@ public class Atraccion {
 		return nombre;
 	}
 
-	public int getCosto() {
-		return precio;
-	}
-
 	public double getDuracionEnHoras() {
 		return duracionEnHoras;
 	}
 
 	public int getCupoInicial() {
-		return cupoInicial;
+		return CUPO_INICIAL;
 	}
 
 	public int getCupoDisponible() {
@@ -38,11 +37,55 @@ public class Atraccion {
 	}
 	
 
-	protected void restarCupo() {
-		
+	public void restarCupo() {
+		this.cupoDisponible -= 1;
 	}
 
 protected void setPrecioConPromocion(int descuento) {
 	this.precio -= descuento;
 }
+
+
+@Override
+public String toString() {
+	return "Atraccion [nombre=" + nombre + ", precio=" + precio + ", duracionEnHoras=" + duracionEnHoras + "]";
+}
+
+
+@Override
+public int getPrecio() {
+	
+	return 0;
+}
+
+
+
+@Override
+public int hashCode() {
+	return Objects.hash(CUPO_INICIAL, cupoDisponible, duracionEnHoras, nombre, precio);
+}
+
+
+@Override
+public boolean equals(Object obj) {
+	if (this == obj)
+		return true;
+	if (obj == null)
+		return false;
+	if (getClass() != obj.getClass())
+		return false;
+	Atraccion other = (Atraccion) obj;
+	return CUPO_INICIAL == other.CUPO_INICIAL && cupoDisponible == other.cupoDisponible
+			&& Double.doubleToLongBits(duracionEnHoras) == Double.doubleToLongBits(other.duracionEnHoras)
+			&& Objects.equals(nombre, other.nombre) && precio == other.precio;
+}
+
+
+@Override
+public double getTiempoRequerido() {
+	
+	return 0;
+}
+
+
 }

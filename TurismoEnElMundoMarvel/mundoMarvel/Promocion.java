@@ -2,23 +2,41 @@ package mundoMarvel;
 
 import java.util.List;
 
-public abstract class Promocion {
+public abstract class Promocion implements Ofertable {
 
 	private String nombre;
-	private List<String[]> promociones;
+	private List <Atraccion> atracciones;
 
-	public Promocion(List<String[]> promociones) {
+	public Promocion(String nombre, List<Atraccion> atracciones) {
 		super();
-		
-		this.promociones = promociones;
+		this.nombre = nombre;
+		this.atracciones = atracciones;
 	}
+	protected abstract double getDescuento();
 
 	public String getNombre() {
 		return nombre;
 	}
-
-	protected abstract double getDescuento();
-	protected double tiempoRequerido() {
+	public int getPrecio() {
 		return 0;
+	}
+	public List<Atraccion> getAtracciones(){
+		return atracciones;
+	}
+    public void restarCupo() {
+    	for (Atraccion atracciones : atracciones) {
+    		atracciones.restarCupo();
+    	}
+    }
+
+	
+	@Override
+	public double getTiempoRequerido() {
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		return "Promocion [nombre=" + nombre + ", atracciones=" + atracciones + "]";
 	}
 }

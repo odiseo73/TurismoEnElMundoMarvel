@@ -3,11 +3,14 @@ package mundoMarvel;
 import java.util.List;
 
 public class PromocionAbsoluta extends Promocion {
-	private double precio;
-	public PromocionAbsoluta(List<String[]> promociones) {
-		super(promociones);
+	public PromocionAbsoluta(String nombre, List<Atraccion> atracciones) {
+		super(nombre, atracciones);
 		
 	}
+
+
+	private double precio;
+	
 
 	@Override
 	protected double getDescuento() {

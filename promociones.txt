@@ -1,0 +1,3 @@
+CivilWar,porcentual,Wakanda,Sokovia,Latveria
+InfinityWar,descuento,Reino Cuantico,Jotunheim, Wakanda
+DarkWorld,axb,Asgard,Jotunheim,Attilan
