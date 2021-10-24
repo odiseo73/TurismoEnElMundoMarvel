@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,18 +15,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+
 public class MundoMarvel {
 
 	private List<Usuario> usuarios;
 	private Map<String, Atraccion> atracciones;
 	private List<Promocion> promociones;
 	private List<Atraccion> atraccionesUsadas;
-private List<String[]> promos;
+	private List<Atraccion> atraccionesOrdenadasPorPrecio;
+public String dato1;
 	public MundoMarvel(String archivo, String archivo2, String archivo3) throws FileNotFoundException {
 		setUsuarios(archivo);
 		setAtracciones(archivo2);
 		setPromociones(archivo3);
-		// ofrecerProductos();
+		//ordenarAtraccionesPorPrecio();
+		ofrecerProductos();
 
 	}
 
@@ -66,8 +70,8 @@ private List<String[]> promos;
 		return usuarios;
 	}
 
-	public List<String[]> getPromociones() {
-		return promos;
+	public List<Promocion> getPromociones() {
+		return promociones;
 	}
 
 	private void setAtracciones(String archivo2) throws FileNotFoundException {
@@ -94,31 +98,31 @@ private List<String[]> promos;
 
 		Scanner sc = new Scanner(new File(archivo3));
 		promociones = new ArrayList<Promocion>();
-		promos = new ArrayList<String[]>();
-		ArrayList<Atraccion> atr = new ArrayList<Atraccion>();
+
+		
 		while (sc.hasNext()) {
 			String[] datos = sc.nextLine().split(",");
 			String nombre = datos[0];
 			String tipo = datos[1];
 			int descuento = Integer.parseInt(datos[2]);
-			
+			dato1 = tipo;
+			ArrayList<Atraccion> atr = new ArrayList<Atraccion>();
 			for (int i = 3; i < datos.length; i++) {
 				if (atracciones.containsKey(datos[i])) {
 					atr.add(atracciones.get(datos[i]));
 				}
 			}
-			promos.add(datos);
 
-			if (tipo == "porcentual") {
-				Promocion por = new PromocionPorcentual(nombre,descuento,atr);
+			if (tipo.equals("porcentual")) {
+				Promocion por = new PromocionPorcentual(nombre, descuento, atr);
 				promociones.add(por);
 			}
-			
-			if (tipo == "absoluta") {
-				Promocion abs = new PromocionAbsoluta(nombre,descuento,atr);
+
+			if (tipo.equals("absoluta")) {
+				Promocion abs = new PromocionAbsoluta(nombre, descuento, atr);
 				promociones.add(abs);
 			}
-			if (tipo == "axb") {
+			if (tipo.equals("axb")) {
 				Promocion axb = new PromocionAxB(nombre, atr);
 				promociones.add(axb);
 			}
@@ -127,70 +131,188 @@ private List<String[]> promos;
 		sc.close();
 	}
 
-	private void generarItinerario(Usuario usuario) throws FileNotFoundException {
+	private void generarArchivoDeSalida(Usuario usuario) throws FileNotFoundException {
 
 		// se crea un archivo de salida para cada usuario
 		PrintWriter salida = new PrintWriter(new File("itinerario_Usuario_" + usuario.getNombre() + ".txt"));
-
+		
 		salida.close();
 
 	}
-
+	private void generarItinerario(List<Ofertable> p) throws FileNotFoundException {
+		System.out.println("Resumen del itinerario");
+		System.out.println("Productos Comprados:" + p );
+		System.out.println("Horas necesarias para realizarlos:");
+		System.out.println("Puntos Marvel necesarios:");
+	}
 	public Map<String, Atraccion> getAtracciones() {
 		return atracciones;
 	}
 
-	private int compararPrecio(Usuario o, Ofertable p) {
-		return Double.compare(o.getDinero(), p.getPrecio());
+	private int compararPrecio(Usuario o, Promocion p) {
+		return Double.compare(o.getDinero(),p.getPrecioConDescuento());
 	}
-
+	
+	private int compararPrecio(Usuario o, Atraccion a) {
+		return Double.compare(o.getDinero(),a.getPrecio());
+	}
 	private int compararTiempo(Usuario o, Ofertable p) {
-		return Double.compare(o.getTiempoEnHoras(), p.getTiempoRequerido());
+		return Double.compare(o.getTiempoEnHoras(), p.getTiempoEnHoras());
 	}
 
+	private boolean verificarCupo(List<Atraccion> atracciones) {
+		boolean hayCupo = true;
+		for (Atraccion atraccion : atracciones) {
+			if(!atraccion.hayCupo()) {
+				hayCupo = false;
+			}
+		}
+		return hayCupo;
+	}
+
+	private boolean verificarRepetidos(List<Atraccion> atr1, List<Atraccion> atr2) {
+		boolean bandera = false;
+		for (Atraccion atraccion : atr2) {
+		if(atr1.contains(atraccion)) {
+			bandera = true;
+		}
+		}
+		return bandera;
+	}
+	private boolean verificarRepetidos(List<Atraccion> atr1, Atraccion atr2) {
+		boolean bandera = true;
+		if(atr1.contains(atr2)) {
+			bandera = false;
+		}
+		return bandera;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void ordenarAtraccionesPorPrecio() {
+		LinkedList <Atraccion> listaDeAtracciones = (LinkedList<Atraccion>) atracciones.values();
+		atraccionesOrdenadasPorPrecio = new LinkedList<Atraccion>();
+		atraccionesOrdenadasPorPrecio = (LinkedList<Atraccion>) ((LinkedList<Atraccion>) listaDeAtracciones).clone();
+		Collections.sort(atraccionesOrdenadasPorPrecio, new OrdenadorDeAtraccionesPorPrecio());
+	
+	}
+	
 	private void ofrecerProductos() throws FileNotFoundException {
+		atraccionesUsadas = new ArrayList<Atraccion>();
+		
 		for (Usuario usuario : usuarios) {
+			List<Ofertable> productosComprados = new LinkedList<Ofertable>();
+			List<Atraccion> atraccionesCompradas = new LinkedList<Atraccion>();
 			System.out.println("Bienvenido/a a Mundo Marvel");
-			System.out.println("Nombre de Visitante" + usuario.getNombre());
+			System.out.println("Nombre de Visitante: " + usuario.getNombre());
 
-			for (Promocion promocion : promociones)
-				if (compararPrecio(usuario, promocion) >= 0 && (compararTiempo(usuario, promocion) >= 0)) {
-					// falta añadir en el if de arriba un comparador de atracciones que ya hayan
-					// sido incluidas
+			for (Promocion promocion : promociones) {
+				
+				if (compararPrecio(usuario, promocion) >= 0  && (compararTiempo(usuario, promocion) >= 0)
+						&& verificarCupo(atraccionesUsadas) && !verificarRepetidos(atraccionesCompradas, promocion.getAtracciones()))
+						 {
+										
 					// mostrar por pantalla su promocion
-					// aqui hace falta hacer el ToString que muestre en pantalla
-
-					ofrecerSugerencias(usuario, promocion);
-
+					
+					ofrecerSugerencias(usuario, promocion, atraccionesCompradas);
 				}
-			generarItinerario(usuario);
+				}
+/*
+			// ordenar el map atracciones y retornar una lista de atracciones. Luego recorrer esa lista 
+			for (Atraccion atraccion : atraccionesOrdenadasPorPrecio) {
+				if(compararPrecio(usuario,atraccion) >= 0 && compararTiempo(usuario, atraccion) >= 0 && verificarCupo(atraccionesUsadas)
+						&& !verificarRepetidos(atraccionesCompradas, atraccion)){
+					//mostrar por pantalla su atraccion
+					ofrecerSugerencias(usuario,atraccion,atraccionesCompradas);
+				}
+					
+			}
+	*/
+			//generarItinerario(usuario);
 		}
 		// Misma logica para las atracciones que se ofertan individualmente
 
 	}
 
-	void ofrecerSugerencias(Usuario usuario, Promocion promocion) {
-		promocion.toString();
+	private List<Atraccion> añadirPromocionComprada(List <Atraccion> atr, Promocion p) {
+		List<Atraccion> lista = p.getAtracciones();
+		for (Atraccion atraccion : lista) {
+			if (!compararNombresIguales(atraccionesUsadas,atraccion)) {
+				atr.add(atraccion);
+			}
+		}
+		return atr;
+	}
+	private List<Atraccion> añadirAtraccionesUsadas(List <Atraccion> atr, Atraccion a) {
+		
+			if (!compararNombresIguales(atraccionesUsadas,a)) {
+				atr.add(a);
+			}
+		return atr;
+	}
+
+	private boolean compararNombresIguales(List<Atraccion> atracciones, Atraccion atr) {
+		boolean bandera = false;
+		for (Atraccion atraccion : atracciones) {
+			if(atraccion.getNombre().equals(atr.getNombre())) {
+				bandera = true;
+			}
+			else {
+				bandera = false;
+			}
+			}
+		
+		return bandera;
+	}
+
+	void ofrecerSugerencias(Usuario usuario, Promocion promocion, List<Atraccion> atraccionesCompradas) {
+		//System.out.println(promocion);
+		System.out.println("Acepta la sugerencia?" + " Ingrese s o n");
+		Integer respuesta;
+		Scanner sc = new Scanner(System.in);
+		respuesta = Integer.parseInt(sc.nextLine());
+		while (respuesta == 1) {
+			
+			//respuesta = sc.nextLine();
+			//if (respuesta.equals("S")) {
+				// si acepta lo compra sino pasa al siguiente
+				usuario.comprarOfertable(promocion);
+				añadirPromocionComprada(atraccionesUsadas,promocion);
+				
+				añadirPromocionComprada(atraccionesCompradas, promocion);
+				//restar el cupo
+				restarCupo(atraccionesUsadas,atraccionesCompradas);
+		//}
+				respuesta = Integer.parseInt(sc.nextLine());
+		}
+		sc.close();
+	}
+	void ofrecerSugerencias(Usuario usuario, Atraccion atraccion, List<Atraccion> atraccionesCompradas) {
+		atraccion.toString();
 		System.out.println("Acepta la sugerencia?" + " Ingrese S o N");
 		Scanner sc = new Scanner(System.in);
-		String respuesta = null;
-		atraccionesUsadas = new ArrayList<Atraccion>();
-		List<Atraccion> atraccionesDePromocion = new ArrayList<Atraccion>();
+		String respuesta = "";
+
 		while (respuesta != "S" && respuesta != "N") {
 			respuesta = sc.nextLine();
 			if (respuesta == "S") {
 				// si acepta lo compra sino pasa al siguiente
-				usuario.comprarOfertable(promocion);
-
-				for (Atraccion atraccion : atraccionesDePromocion) {
-
-					atraccionesUsadas.add(atraccion);
-					// luego las atracciones incluidas en la promocion deben guadarse en otra lista
-					// atraccionesUsadas.add((Atraccion) promocion.getAtracciones());
-				}
+				usuario.comprarOfertable(atraccion);
+				añadirAtraccionesUsadas(atraccionesUsadas,atraccion);
+				
+				añadirAtraccionesUsadas(atraccionesCompradas, atraccion);
+				//restar el cupo
+				restarCupo(atraccionesUsadas,atraccionesCompradas);
 			}
 
 		}
 		sc.close();
+	}
+	private void restarCupo(List<Atraccion> atraccionesUsadas, List<Atraccion> atraccionesCompradas) {
+		for (Atraccion atraccion : atraccionesUsadas) {
+			if(compararNombresIguales(atraccionesCompradas, atraccion)) {
+				atraccion.restarCupo();
+			}
+		}
+		
 	}
 }

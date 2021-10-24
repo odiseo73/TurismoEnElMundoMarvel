@@ -4,7 +4,7 @@ public interface Ofertable {
 
 	int getPrecio();
 
-	double getTiempoRequerido();
+	double getTiempoEnHoras();
 	void restarCupo();
 	
 }

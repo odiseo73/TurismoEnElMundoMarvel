@@ -3,10 +3,10 @@ package mundoMarvel;
 public class Usuario {
 
 	private String nombre;
-	private int tiempoDisponible;
-	private double dinero;
+	private double tiempoDisponible;
+	private int dinero;
 	
-	public Usuario(String nombre, int tiempoEnHoras, double dinero) {
+	public Usuario(String nombre, int dinero, double tiempoEnHoras) {
 		this.nombre = nombre;
 		this.tiempoDisponible = tiempoEnHoras;
 		this.dinero = dinero;
@@ -14,7 +14,7 @@ public class Usuario {
 	public String getNombre() {
 		return nombre;
 	}
-	public int getTiempoEnHoras() {
+	public double getTiempoEnHoras() {
 		return tiempoDisponible;
 	}
 	public double getDinero() {
@@ -23,11 +23,11 @@ public class Usuario {
 	
 	protected void comprarOfertable(Ofertable o) {
 			this.dinero -= o.getPrecio();
-			this.tiempoDisponible -= o.getTiempoRequerido();
+			this.tiempoDisponible -= o.getTiempoEnHoras();
 	}
 	@Override
 	public String toString() {
-		return "Usuario [nombre=" + nombre + ", tiempoEnHoras=" + tiempoDisponible + ", dinero=" + dinero + "]";
+		return "Usuario [nombre=" + nombre + ", tiempoEnHoras=" + tiempoDisponible + ", dinero=" + dinero + "]" + "\n";
 	}
 	
 	//tieneDineroSuficiente

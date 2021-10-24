@@ -13,8 +13,9 @@ private double precio;
 	
 
 	@Override
-	protected double getDescuento() {
-		return 0;
+	protected double getPrecioConDescuento() {
+		
+		return super.getPrecio() - super.getAtracciones().get(0).getPrecio();
 		
 	}
 

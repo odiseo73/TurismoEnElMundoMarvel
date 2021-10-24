@@ -10,8 +10,8 @@ public class PromocionAbsoluta extends Promocion {
 	}
 
 	@Override
-	protected double getDescuento() {
-		return 0;
+	protected double getPrecioConDescuento() {
+		return precio;
 		
 		
 	}
