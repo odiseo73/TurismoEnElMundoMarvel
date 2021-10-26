@@ -153,13 +153,6 @@ public class MundoMarvel {
 
 	}
 
-	/*
-	 * private void generarItinerario(List<Ofertable> p) throws
-	 * FileNotFoundException {
-	 * 
-	 * }
-	 */
-
 	private int compararPrecioPromocion(Usuario o, Promocion p) {
 		return Double.compare(o.getDinero(), p.getPrecioConDescuento());
 	}
@@ -226,7 +219,7 @@ for (Ofertable producto : productos) {
 		}
 	}
 
-	private List<Atraccion> añadirPromocionComprada(List<Atraccion> atr, Promocion p) {
+	private List<Atraccion> aniadirPromocionComprada(List<Atraccion> atr, Promocion p) {
 		List<Atraccion> lista = p.getAtracciones();
 		for (Atraccion atraccion : lista) {
 			if (!compararNombresIguales(atraccionesUsadas, atraccion)) {
@@ -236,7 +229,7 @@ for (Ofertable producto : productos) {
 		return atr;
 	}
 
-	private List<Atraccion> añadirAtraccionesUsadas(List<Atraccion> atr, Atraccion a) {
+	private List<Atraccion> aniadirAtraccionesUsadas(List<Atraccion> atr, Atraccion a) {
 
 		if (!compararNombresIguales(atraccionesUsadas, a)) {
 			atr.add(a);
@@ -279,10 +272,10 @@ for (Ofertable producto : productos) {
 				}
 				if (respuesta.equals("SI")) {
 					usuario.comprarOfertable(promocion);
-					añadirPromocionComprada(atraccionesUsadas, promocion);
-					añadirPromocionComprada(atraccionesCompradas, promocion);
+					aniadirPromocionComprada(atraccionesUsadas, promocion);
+					aniadirPromocionComprada(atraccionesCompradas, promocion);
 					restarCupo(atraccionesUsadas, atraccionesCompradas);
-					añadirOfertable(productosComprados, promocion);
+					aniadirOfertable(productosComprados, promocion);
 				}
 				System.out.println("----------------------------------------------");
 			}
@@ -312,19 +305,19 @@ for (Ofertable producto : productos) {
 				}
 				if (respuesta.equals("SI")) {
 					usuario.comprarOfertable(atraccion);
-					añadirAtraccionesUsadas(atraccionesUsadas, atraccion);
+					aniadirAtraccionesUsadas(atraccionesUsadas, atraccion);
 
-					añadirAtraccionesUsadas(atraccionesCompradas, atraccion);
+					aniadirAtraccionesUsadas(atraccionesCompradas, atraccion);
 
 					restarCupo(atraccionesUsadas, atraccionesCompradas);
-					añadirOfertable(productosComprados, atraccion);
+					aniadirOfertable(productosComprados, atraccion);
 				}
 				System.out.println("----------------------------------------------");
 			}
 		}
 	}
 
-	void añadirOfertable(List<Ofertable> productosComprados, Ofertable o) {
+	void aniadirOfertable(List<Ofertable> productosComprados, Ofertable o) {
 		productosComprados.add(o);
 	}
 
