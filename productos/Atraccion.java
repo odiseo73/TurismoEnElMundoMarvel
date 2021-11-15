@@ -79,4 +79,16 @@ public class Atraccion implements Ofertable {
 				&& Objects.equals(nombre, other.nombre) && precio == other.precio;
 	}
 
+	@Override
+	public List<Atraccion> getAtracciones() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getAtraccionesIndividuales() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

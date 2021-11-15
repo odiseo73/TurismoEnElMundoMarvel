@@ -13,11 +13,18 @@ public class PromocionPorcentual extends Promocion {
 
 	
 	@Override
-	protected double getPrecioConDescuento() {
+	public double getPrecioConDescuento() {
 		this.precio = super.getPrecio();
 		precio -= super.getPrecio() * descuentoPorcentual / 100;
 		return precio;
 
+	}
+
+
+	@Override
+	public String getAtraccionesIndividuales() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

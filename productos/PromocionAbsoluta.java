@@ -10,10 +10,16 @@ public class PromocionAbsoluta extends Promocion {
 	}
 
 	@Override
-	protected double getPrecioConDescuento() {
+	public double getPrecioConDescuento() {
 		return precio;
 		
 		
+	}
+
+	@Override
+	public String getAtraccionesIndividuales() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

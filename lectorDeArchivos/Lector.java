@@ -13,13 +13,38 @@ import java.util.Scanner;
 
 import productos.Atraccion;
 import productos.Promocion;
+import productos.PromocionAbsoluta;
+import productos.PromocionAxB;
+import productos.PromocionPorcentual;
 import usuario.Usuario;
 
 public class Lector {
-
+	public Lector(String string, String string2, String string3) throws FileNotFoundException {
+		setUsuarios(string);
+		setAtracciones(string2);
+		setPromociones(string3);
+	}
 	private List<Usuario> usuarios;
 	private Map<String, Atraccion> atracciones;
 	private List<Promocion> promociones;
+	// despues eliminar atr
+	private List<Atraccion> atr;
+
+	protected List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	protected Map<String, Atraccion> getAtracciones() {
+		return atracciones;
+	}
+
+	protected List<Promocion> getPromociones() {
+		return promociones;
+	}
+
+	protected List<Atraccion> getAtraccionesUsadas() {
+		return atr;
+	}
 
 	public void setUsuarios(String archivo) throws FileNotFoundException {
 		FileReader fr = null;

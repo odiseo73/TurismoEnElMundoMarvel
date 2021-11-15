@@ -28,7 +28,7 @@ public class Usuario {
 	}
 	
 
-	protected void comprarOfertable(Ofertable o) {
+	public void comprarOfertable(Ofertable o) {
 			this.dinero -= o.getPrecio();
 			this.tiempoDisponible -= o.getTiempoEnHoras();
 			

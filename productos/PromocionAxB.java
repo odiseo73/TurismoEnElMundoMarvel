@@ -13,10 +13,17 @@ private double precio;
 	
 
 	@Override
-	protected double getPrecioConDescuento() {
+	public double getPrecioConDescuento() {
 		
 		return super.getPrecio() - super.getAtracciones().get(0).getPrecio();
 		
+	}
+
+
+	@Override
+	public String getAtraccionesIndividuales() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

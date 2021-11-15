@@ -6,7 +6,8 @@ public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		MundoMarvel mm = new MundoMarvel("usuarios.txt","atracciones.txt","promociones.txt");	
-		System.out.println(mm.getAtracciones());
+		@SuppressWarnings("unused")
+MundoMarvel mm = new MundoMarvel("C:\\Users\\lucia\\Documents\\Programación\\Eclipse\\Desafios\\TurismoEnElMundoMarvel\\archivosDeEntrada\\usuarios.txt","C:\\Users\\lucia\\Documents\\Programación\\Eclipse\\Desafios\\TurismoEnElMundoMarvel\\archivosDeEntrada\\atracciones.txt","C:\\Users\\lucia\\Documents\\Programación\\Eclipse\\Desafios\\TurismoEnElMundoMarvel\\archivosDeEntrada\\promociones.txt");	
+		
 		}
 }

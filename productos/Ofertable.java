@@ -14,4 +14,6 @@ public interface Ofertable {
 	public List<Atraccion> getAtracciones();
 	
 	boolean esPromocion();
+
+	String getAtraccionesIndividuales();
 }
